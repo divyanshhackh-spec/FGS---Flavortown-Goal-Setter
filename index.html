@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FGS · Flavortown Goal Setter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #f5e3c2;
+  --bg-soft: #f2d9ae;
+  --card: #fff4df;
+  --card-soft: #ffe9c4;
+  --blue: #4e79a7;
+  --blue-dark: #3c638f;
+  --green: #76a94b;
+  --green-dark: #557932;
+  --brown: #7b4a2f;
+  --accent: #e85d5d;
+  --accent-soft: #ff9b8a;
+  --text: #3b2b1c;
+  --text-soft: #7a6045;
+  --progress-bg: #e8d8b8;
+}
+
+body.dark {
+  --bg: #121013;          /* slightly lighter black */
+  --bg-soft: #18151a;
+  --card: #1f1b17;
+  --card-soft: #25201a;
+  --brown: #caa66b;
+  --text: #4f0f0f;
+  --text-soft: #d2c0a2;
+  --progress-bg: #2c2620;
+  --blue: #4e79a7;
+  --blue-dark: #375373;
+  --green: #76a94b;
+  --green-dark: #5a7f36;
+  --accent: #ff7a7a;
+  --accent-soft: #ffb09e;
+  background-color: #121013;                     /* light black screen */
+  background-image: url("pattern.webp");         /* pattern as bg */
+  background-repeat: repeat;                     /* tiling pattern */
+  background-size: auto;                         /* use pattern size */
+  background-position: center;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* DAY: yellow + bg.png */
+  background-color: #E7D4B1;
+  background-image: url("bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  color: var(--text);
+  transition: background-color 0.4s, color 0.4s;
+  min-height: 100vh;
+}
+
+/* PAGE SHELL CENTERED */
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px 56px;
+}
+
+/* HEADER WRAPPER */
+.header {
+  margin: 22px 0 8px;
+  position: relative;
+}
+
+/* Hack Club-style heading pill centered */
+.kitchen-index__header {
+  display: flex;
+  justify-content: center;
+}
+
+.ui-heading.ui-heading--blue.ui-heading--full {
+  display: inline-block;
+}
+
+.ui-heading__stack {
+  position: relative;
+  display: inline-flex;
+}
+
+.ui-heading__backdrop {
+  position: absolute;
+  inset: 4px -6px -8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.ui-heading__surface {
+  position: relative;
+  padding: 14px 72px;
+  border-radius: 999px;
+
+  /* pattern + blue overlay */
+  background-image: url("pattern.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--blue);
+
+  box-shadow:
+    inset 0 -5px 0 var(--blue-dark),
+    0 8px 0 rgba(0,0,0,0.22);
+  color: #ffffff;
+  cursor: default;
+}
+
+/* subtle blue overlay so text stays readable */
+.ui-heading__surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(78, 121, 167, 0.78); /* semi‑transparent blue */
+  pointer-events: none;
+}
+
+.ui-heading__title {
+  position: relative; /* above overlay */
+}
+
+
+
+.ui-heading__title {
+  margin: 0;
+  font-family: "Baloo 2", cursive;
+  font-size: 1.6rem;
+}
+
+/* small badge on left */
+.header-sub {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+  border: 2px solid var(--brown);
+  color: var(--text-soft);
+}
+
+/* Theme toggle */
+.toggle {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.3rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+  user-select: none;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+}
+
+.toggle:hover {
+  transform: translateY(calc(-50% - 2px));
+  box-shadow: 0 9px 0 rgba(0,0,0,0.18);
+}
+
+/* MAIN LAYOUT */
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* slogan box with png */
+.hero-card {
+  position: relative;
+  overflow: hidden;
+
+  background: #f8e3b8;                 /* fallback color */
+  border-radius: 26px;
+  border: 4px solid var(--brown);
+  padding: 20px 20px 18px;
+  margin-bottom: 26px;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  /* hero-bg image as block background */
+  background-image: url("hero-bg.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+.hero-image-wrap {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 22px;
+  background: var(--card);
+  border: 3px solid rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-image-wrap img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-text h1 {
+  margin: 0 0 6px;
+  font-family: "Baloo 2", cursive;
+  font-size: 1.4rem;
+}
+
+.hero-text p {
+  margin: 0;
+  font-size: 0.96rem;
+  color: var(--text-soft);
+}
+
+/* generic card */
+.card {
+  background: #fff4df;
+  border-radius: 26px;
+  border: 4px solid var(--brown);
+  padding: 22px 20px 24px;
+  margin-bottom: 26px;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+
+  background-image: url("hero-bg.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+h2 {
+  font-family: "Baloo 2", cursive;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* GOAL CALCULATOR */
+label {
+  font-weight: 600;
+  margin-top: 14px;
+  display: block;
+  font-size: 0.9rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 14px;
+  border: 2px solid var(--brown);
+  font-size: 0.95rem;
+  background: #fffdf7;
+}
+
+body.dark input,
+body.dark select {
+  background: #261f19;
+}
+
+input:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(232,93,93,0.35);
+  border-color: var(--accent);
+}
+
+/* blue choose button */
+.choose-btn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 16px;
+  border: none;
+  background: linear-gradient(135deg, #6ba0ff, #4e79a7);
+  color: white;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.choose-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.18);
+}
+
+.goal-summary {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  opacity: 0.9;
+}
+
+.goal-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 2px dashed var(--brown);
+}
+
+/* main calculate button */
+button.main-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 18px;
+  border: none;
+  background: linear-gradient(135deg, #ff7a7a, var(--accent));
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.18);
+  font-size: 1rem;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+button.main-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 11px 0 rgba(0,0,0,0.2);
+}
+
+/* progress */
+.progress {
+  margin-top: 18px;
+  background: var(--progress-bg);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 20px;
+  width: 0%;
+  background: linear-gradient(90deg, #ffd36a, #ff9b57);
+  transition: width 1.2s ease;
+}
+
+/* stats row */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.stat-pill {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* footer */
+footer {
+  text-align: center;
+  opacity: 0.75;
+  font-size: 0.85rem;
+  padding-bottom: 18px;
+}
+
+/* generic modal shell (used for both result + shop picker) */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-out;
+  z-index: 20;
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* result modal */
+.modal-box {
+  background: #fff4df;
+  border-radius: 26px;
+  border: 4px solid var(--brown);
+  padding: 22px 18px 20px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  transform: scale(0.9) translateY(10px);
+  transition: transform 0.25s ease-out;
+
+  background-image: url("bg-2.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.modal.active .modal-box {
+  transform: scale(1) translateY(0);
+}
+
+.modal-stats {
+  font-size: 0.95rem;
+  margin: 8px 0 14px;
+}
+
+/* shop picker modal */
+.shop-modal-box {
+  background: var(--card);
+  border-radius: 26px;
+  border: 4px solid var(--brown);
+  padding: 18px 18px 16px;
+  max-width: 520px;
+  width: 92%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: scale(0.9) translateY(10px);
+  transition: transform 0.25s ease-out;
+}
+
+.modal.active .shop-modal-box {
+  transform: scale(1) translateY(0);
+}
+
+.shop-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shop-modal-title {
+  font-family: "Baloo 2", cursive;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.shop-modal-close {
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.shop-modal-list {
+  margin-top: 6px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* each item row */
+.shop-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 16px;
+  border: 2px solid var(--brown);
+  background: var(--card-soft);
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.shop-option:hover {
+  background: #ffe0b9;
+}
+
+.shop-option-image-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 2px solid rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-option-image-wrap img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.shop-option-main {
+  flex: 1;
+}
+
+.shop-option-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.shop-option-meta {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.shop-option-price {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* cookie emoji for result modal */
+.cookie {
+  position: fixed;
+  top: -30px;
+  font-size: 26px;
+  animation: fall 2.5s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(120vh) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+/* responsive tweaks */
+@media (max-width: 640px) {
+  .ui-heading__surface {
+    padding: 12px 40px;
+  }
+  .ui-heading__title {
+    font-size: 1.3rem;
+  }
+  .hero-card {
+    align-items: flex-start;
+  }
+  .hero-image-wrap {
+    width: 64px;
+    height: 64px;
+  }
+  .hero-image-wrap img {
+    width: 52px;
+    height: 52px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+  <div class="header">
+    
+
+    <!-- New FGS Kitchen blue pill heading -->
+    <div class="kitchen-index__header">
+      <div class="ui-heading ui-heading--blue ui-heading--full">
+        <div class="ui-heading__stack">
+          <span class="ui-heading__backdrop" aria-hidden="true"></span>
+          <div class="ui-heading__surface">
+            <h1 class="ui-heading__title">FGS Kitchen</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toggle" id="themeToggle" title="Toggle Night Shift">🌙</div>
+  </div>
+
+  <div class="container">
+    <div class="hero-card">
+      <div class="hero-image-wrap">
+        <img src="flavortown_logo.png" alt="FGS slogan">
+      </div>
+      <div class="hero-text">
+        <h1>Cook up your dream reward</h1>
+        <p>Turn project hours into cookies, then into the prize you’ve been eyeing in the Flavortown kitchen.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      
+      <h2> Goal Calculator</h2>
+
+      <label> Goal</label>
+      <button type="button" class="choose-btn" id="chooseGoalBtn">
+        Choose Goal From Shop
+      </button>
+      <input id="goalName" type="text" style="margin-top:8px; display:none;">
+
+      <label> Cookies needed</label>
+      <input id="cookies" type="number" min="1">
+
+      <label> Days remaining</label>
+      <input id="days" type="number" min="1">
+
+      <label> Project quality</label>
+      <select id="quality">
+        <option value="1">Low effort</option>
+        <option value="1.5">Average</option>
+        <option value="2">High quality</option>
+      </select>
+
+      
+
+      <button id="planBtn" class="main-btn">Cook up a plan 🍳</button>
+
+      <div class="progress">
+        <div class="progress-bar" id="bar"></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-pill"> Total hours: <span id="statTotalHours">0</span></div>
+        <div class="stat-pill"> Hours/day: <span id="statHoursPerDay">0</span></div>
+        <div class="stat-pill"> Cookies/hour: <span id="statCookiesPerHour">0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>FGS · Built for Hack Club Flavortown </footer>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modal-box">
+    <h2>Your Cooking Plan</h2>
+    <p class="modal-stats" id="modalStats"></p>
+    <button class="main-btn" style="margin-top:8px;" onclick="closeResultModal()">Back to kitchen</button>
+  </div>
+</div>
+
+<div class="modal" id="shopModal">
+  <div class="shop-modal-box">
+    <div class="shop-modal-header">
+      <h3 class="shop-modal-title">Choose a Goal From Shop</h3>
+      <button class="shop-modal-close" id="closeShopModalBtn" aria-label="Close">✕</button>
+    </div>
+    <p style="font-size:0.85rem; color:var(--text-soft); margin:0 0 6px;">
+      Pick any item below and we’ll fill in the goal and cookie cost for you.
+    </p>
+    <div class="shop-modal-list" id="shopOptions"></div>
+  </div>
+</div>
+
+<script>
+const cookiesInput    = document.getElementById("cookies");
+const daysInput       = document.getElementById("days");
+const quality         = document.getElementById("quality");
+const resultModal     = document.getElementById("resultModal");
+const modalStats      = document.getElementById("modalStats");
+const bar             = document.getElementById("bar");
+const goalNameInput   = document.getElementById("goalName");
+
+const statTotalHoursEl     = document.getElementById("statTotalHours");
+const statHoursPerDayEl    = document.getElementById("statHoursPerDay");
+const statCookiesPerHourEl = document.getElementById("statCookiesPerHour");
+
+const themeToggle      = document.getElementById("themeToggle");
+const THEME_KEY        = "fgs-theme";
+
+const chooseGoalBtn    = document.getElementById("chooseGoalBtn");
+const shopModal        = document.getElementById("shopModal");
+const closeShopModalBtn= document.getElementById("closeShopModalBtn");
+const shopOptionsEl    = document.getElementById("shopOptions");
+
+const shopGoals = [
+  { name:"Campfire Flagship Travel Grant", cookies:15,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6ODg5MzQsInB1ciI6ImJsb2JfaWQifX0=--4b79e430a78c2747a9603f0a7c03df9b0ac29331/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/campfire-flagship-flight-stipend.png" },
+  { name:"Chrome Webstore Licence",        cookies:20,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTA1MzY3LCJwdXIiOiJibG9iX2lkIn19--a3540aa6c60c9e9e6835f4e7d728fd14a0793757/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/webstore.png" },
+  { name:"Random Paper from HQ",           cookies:22,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTAyNDIxLCJwdXIiOiJibG9iX2lkIn19--43ecb4c355ca66d7f222639592d91621d6c120c3/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/random-paper.png" },
+  { name:"Pile Of Stickers",               cookies:25,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NTMyLCJwdXIiOiJibG9iX2lkIn19--00960983352d912aa3d30bbee91e810628fffb7f/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/pile_of_stickers.png" },
+  { name:"AI Credits",                     cookies:35,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTY2NCwicHVyIjoiYmxvYl9pZCJ9fQ==--f45a32bef856a14dcc83229efddfc2723f068f8f/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/ai.png" },
+  { name:"Cloudflare Credits",             cookies:35,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6OTEwNCwicHVyIjoiYmxvYl9pZCJ9fQ==--aa4d0afda8d44ab14907d503106e1b2149170301/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/cloudflare.png" },
+  { name:"PCB Manufacturing Credits",      cookies:35,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6OTA5OSwicHVyIjoiYmxvYl9pZCJ9fQ==--9e40bff661948bad02377bc02a8c98c875f442c5/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/pcb%2010.png" },
+  { name:"3D Printing Credits",            cookies:35,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTAwOTAyLCJwdXIiOiJibG9iX2lkIn19--f92164a848ddeabd2c29720e84c53205f6c5b11f/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/3d%20printing.png" },
+  { name:"Hot Chocolate!",                 cookies:40,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTkxOCwicHVyIjoiYmxvYl9pZCJ9fQ==--73bfb890b1821ad3e69ecb8d989b706465909fb0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/hotchoc.png" },
+  { name:"Cloud Hosting Credits",          cookies:40,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTAwODE4LCJwdXIiOiJibG9iX2lkIn19--34c7ea470530896c00c525878af841acd527dc46/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/hosting.png" },
+  { name:"Free Domain",                    cookies:40,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjI2LCJwdXIiOiJibG9iX2lkIn19--4e4fc0680ac4b0162f01b1b6706d924957b2bfab/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/Screenshot%202025-12-10%20at%2002.29.41.png" },
+  { name:"iFixit Credits",                 cookies:45,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6OTExMiwicHVyIjoiYmxvYl9pZCJ9fQ==--5c4633283db99ccc80707354440342ce4bdfede0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/ifixit.png" },
+  { name:"Hack Club Pin",                  cookies:60,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTEzOTQsInB1ciI6ImJsb2JfaWQifX0=--24f2a6b4c9f9545f9132499c2a3757d8c1b3bb49/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/hcpin.png" },
+  { name:"Smolhåj",                        cookies:83,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjM1LCJwdXIiOiJibG9iX2lkIn19--34b25d54db53c692f44b9f67a4c1f6ffd2eb391c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/blahaj.png" },
+  { name:"HackDucky",                      cookies:100, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MzcxLCJwdXIiOiJibG9iX2lkIn19--92673bfd80d9023376d6529f73f47087787df41c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/image%20(1).png" },
+  { name:"HUION Drawing Tablet",           cookies:104, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NjMwODcsInB1ciI6ImJsb2JfaWQifX0=--a77e5f1cccdf9c7fe4c5a042f21dade9713e6317/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/hs64-simp-pic-removebg-preview.png" },
+  { name:"Campfire Flagship T-Shirt",      cookies:124, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6ODg5NTYsInB1ciI6ImJsb2JfaWQifX0=--80d552c03f6c1014d25a79a304bdd15081d3da1c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/image.png" },
+  { name:"Pinecil",                        cookies:140, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjQwLCJwdXIiOiJibG9iX2lkIn19--fc0fcb1a6e458a05272d6b45042f958db81d70ff/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/pinecil.png" },
+  { name:"GitHub Notebook",                cookies:143, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NjA5OCwicHVyIjoiYmxvYl9pZCJ9fQ==--34eb99b0115ea744c1a356a841bf3f94b4afe2c1/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/githubnotebook.png" },
+  { name:"GitHub Keycaps",                 cookies:180, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjgyLCJwdXIiOiJibG9iX2lkIn19--7a1d0514fdf01e854dac0018d4f10a863c83b704/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/gh_keycaps%20Background%20Removed.png" },
+  { name:"Yubikey",                        cookies:206, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MzQ0LCJwdXIiOiJibG9iX2lkIn19--668918610996dc1c8b30ff0f3c537bec337c697e/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/yubikey.png" },
+  { name:"Factorio",                       cookies:210, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MzM2LCJwdXIiOiJibG9iX2lkIn19--f17d9830a3942072721af09309e204c0df9f778e/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/factorio-cover.png" },
+  { name:"Mullvad VPN (6 mo)",            cookies:216, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6OTEyMSwicHVyIjoiYmxvYl9pZCJ9fQ==--2dfab7da486391b017e30c4156fb6e626b0c0a3a/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/mullvad.png" },
+  { name:"Icepi Zero",                     cookies:263, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6Njc3NjEsInB1ciI6ImJsb2JfaWQifX0=--84b3ac31071f04775610aac6ed8a58b6b4e5b35e/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/icepi-trans-removebg-preview.png" },
+  { name:"$50 Proton Credit",              cookies:300, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6OTA3NSwicHVyIjoiYmxvYl9pZCJ9fQ==--c0a2a05c8b69ca3cece13976d3c5137383a79214/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/proton%2050.png" },
+  { name:"PO-14 Synth",                    cookies:335, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6Nzg4NjcsInB1ciI6ImJsb2JfaWQifX0=--c0e5fc78a6fe829e0a289e78a0eba3de219a6413/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/po14.avif" },
+  { name:"PO-24 Synth",                    cookies:360, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6Nzg4NDgsInB1ciI6ImJsb2JfaWQifX0=--0b0c6906ffec6a73b3b1db8a85f7fbf992fcaa07/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/po24.avif" },
+  { name:"Open Sauce 2026 Ticket",         cookies:450, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NTk5MSwicHVyIjoiYmxvYl9pZCJ9fQ==--47800d21a2df7e9d986db101eb5b48e27235cda0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/opensauce.png" },
+  { name:"Apple Pencil Pro",               cookies:452, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MzMxLCJwdXIiOiJibG9iX2lkIn19--e4a8d5cbc032ecc1c0134e02850b5c1867f95b3e/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/app%20Background%20Removed.png" },
+  { name:"Raspberry Pi 5",                 cookies:455, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjEwLCJwdXIiOiJibG9iX2lkIn19--bb4ab60784a2590933a9f7f273851b7c63f2b731/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/raspberry-pi-5-raspberry-pi-40958498898115_1000x%20Background%20Removed.png" },
+  { name:"Magic Keyboard",                 cookies:800, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NDA3MCwicHVyIjoiYmxvYl9pZCJ9fQ==--4b2acfa45a2a914dbe31136ab9aa0172ae26ea73/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/magickeyboard.jpg" },
+  { name:"Polaroid Go Gen 2",              cookies:862, image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NTU5NCwicHVyIjoiYmxvYl9pZCJ9fQ==--a9a145bfe4a10a7f16209d4e3482b31a6ef00b3e/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/polaroid.png" },
+  { name:"Bambu Lab A1 Mini",              cookies:1050,image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTA0MCwicHVyIjoiYmxvYl9pZCJ9fQ==--cedc8c99b13ed26168072804c69734c4936763cf/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/a1mini.png" },
+  { name:"Mac Mini",                       cookies:3000,image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjU2LCJwdXIiOiJibG9iX2lkIn19--29cf14bf5dc02cac15750d150481a7ad562dedd7/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/macmini%20Background%20Removed.png" },
+  { name:"MacBook Air",                    cookies:4995,image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjUwLCJwdXIiOiJibG9iX2lkIn19--60d2d36d5c02546f61220f0814b67655a58de042/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/mba%20Background%20Removed%202.png" }
+];
+
+
+function calculate() {
+  const cookies = +cookiesInput.value;
+  const days    = +daysInput.value;
+  const q       = +quality.value;
+  if (!cookies || !days) return;
+
+  const rate  = 10 * q;
+  const total = cookies / rate;
+  const perDay = total / days;
+
+  statTotalHoursEl.textContent     = total.toFixed(1);
+  statHoursPerDayEl.textContent    = perDay.toFixed(2);
+  statCookiesPerHourEl.textContent = rate.toFixed(1);
+
+  const goalName = (goalNameInput.value || "your goal").trim();
+
+  modalStats.innerHTML = `
+     <b>${goalName}</b><br>
+     <b>${cookies}</b> cookies<br>
+     <b>${total.toFixed(1)}</b> hrs total<br>
+     <b>${perDay.toFixed(2)}</b> hrs/day<br>
+     <b>${rate.toFixed(1)}</b> cookies/hr
+  `;
+
+  bar.style.width = "100%";
+  cookieRain(20);
+  openResultModal();
+}
+
+function cookieRain(n) {
+  for (let i = 0; i < n; i++) {
+    const c = document.createElement("div");
+    c.className = "cookie";
+    c.textContent = "🍪";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.animationDelay = (Math.random() * 0.8) + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+
+function openResultModal() {
+  resultModal.classList.add("active");
+}
+function closeResultModal() {
+  resultModal.classList.remove("active");
+}
+
+function renderShopOptions() {
+  shopOptionsEl.innerHTML = "";
+  shopGoals.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "shop-option";
+    row.innerHTML = `
+      <div class="shop-option-image-wrap">
+        <img src="${item.image}" alt="${item.name}">
+      </div>
+      <div class="shop-option-main">
+        <div class="shop-option-name">${item.name}</div>
+        <div class="shop-option-meta">Tap to choose this as your goal</div>
+      </div>
+      <div class="shop-option-price">${item.cookies} 🍪</div>
+    `;
+    row.addEventListener("click", () => {
+      goalNameInput.value = item.name;
+      cookiesInput.value  = item.cookies;
+      shopModal.classList.remove("active");
+      chooseGoalBtn.textContent = item.name + " · " + item.cookies + " 🍪";
+    });
+    shopOptionsEl.appendChild(row);
+  });
+}
+
+function openShopModal() {
+  renderShopOptions();
+  shopModal.classList.add("active");
+}
+function closeShopModal() {
+  shopModal.classList.remove("active");
+}
+
+function applyThemeFromStorage() {
+  const stored = localStorage.getItem(THEME_KEY);
+  if (stored === "dark") {
+    document.body.classList.add("dark");
+    themeToggle.textContent = "☀️";
+  } else {
+    document.body.classList.remove("dark");
+    themeToggle.textContent = "🌙";
+  }
+}
+
+function toggleDark() {
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+  themeToggle.textContent = isDark ? "☀️" : "🌙";
+}
+
+document.getElementById("planBtn").addEventListener("click", calculate);
+themeToggle.addEventListener("click", toggleDark);
+chooseGoalBtn.addEventListener("click", openShopModal);
+closeShopModalBtn.addEventListener("click", closeShopModal);
+shopModal.addEventListener("click", (e) => {
+  if (e.target === shopModal) closeShopModal();
+});
+
+applyThemeFromStorage();
+</script>
+
+</body>
+</html>

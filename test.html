@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FGS · Flavortown Goal Setter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #f5e3c2;
+  --bg-soft: #f2d9ae;
+  --card: #fff4df;
+  --card-soft: #ffe9c4;
+  --blue: #4e79a7;
+  --blue-dark: #3c638f;
+  --green: #76a94b;
+  --green-dark: #557932;
+  --brown: #7b4a2f;
+  --accent: #e85d5d;
+  --accent-soft: #ff9b8a;
+  --text: #3b2b1c;
+  --text-soft: #7a6045;
+  --progress-bg: #e8d8b8;
+
+  --rarity-common: #c0c4cf;
+  --rarity-rare: #4e79a7;
+  --rarity-epic: #9b59b6;
+  --rarity-legendary: #f1c40f;
+  --rarity-mythic: #e85d9b;
+}
+
+body.dark {
+  --bg: #171310;
+  --bg-soft: #1f1b17;
+  --card: #1f1b17;
+  --card-soft: #25201a;
+  --brown: #caa66b;
+  --text: #f5ead8;
+  --text-soft: #d2c0a2;
+  --progress-bg: #2c2620;
+  --blue: #4e79a7;
+  --blue-dark: #375373;
+  --green: #76a94b;
+  --green-dark: #5a7f36;
+  --accent: #ff7a7a;
+  --accent-soft: #ffb09e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.7), transparent 60%),
+    radial-gradient(circle at top right, #ffe9c4, var(--bg));
+  color: var(--text);
+  transition: background 0.4s, color 0.4s;
+  min-height: 100vh;
+}
+
+/* PAGE SHELL CENTERED */
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px 56px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: center;
+  margin: 22px 0 8px;
+  position: relative;
+}
+
+.header-pill {
+  background: var(--blue);
+  color: white;
+  padding: 16px 72px;
+  border-radius: 24px;
+  font-family: "Baloo 2", cursive;
+  font-size: 1.6rem;
+  box-shadow:
+    inset 0 -5px 0 var(--blue-dark),
+    0 10px 0 rgba(0,0,0,0.18);
+}
+
+.header-sub {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+  border: 2px solid var(--brown);
+  color: var(--text-soft);
+}
+
+/* Theme toggle */
+.toggle {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.3rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+  user-select: none;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+}
+
+.toggle:hover {
+  transform: translateY(calc(-50% - 2px));
+  box-shadow: 0 9px 0 rgba(0,0,0,0.18);
+}
+
+/* MAIN LAYOUT */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Dialogue */
+.dialogue {
+  background: var(--card-soft);
+  border-radius: 20px;
+  border: 3px solid var(--brown);
+  padding: 18px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 26px;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.08);
+}
+
+.dialogue img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.dialogue p {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: 26px;
+  border: 4px solid var(--brown);
+  padding: 22px 20px 24px;
+  margin-bottom: 26px;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+}
+
+h2 {
+  font-family: "Baloo 2", cursive;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* SHOP NAV + FILTERS */
+.shop-bar-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.shop-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+/* tabs become buttons */
+.shop-tab {
+  padding: 8px 20px;
+  border-radius: 18px;
+  border: 3px solid var(--brown);
+  background: #cbe6ff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+}
+
+.shop-tab.secondary {
+  background: #ffd1cc;
+}
+
+.shop-tab.active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.16);
+}
+
+/* filter bar */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.filter-select {
+  border-radius: 999px;
+  border: 2px solid var(--brown);
+  background: var(--card);
+  padding: 6px 10px;
+  font-size: 0.78rem;
+}
+
+/* search + rarity row */
+.filter-content-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+  align-items: center;
+}
+
+.search-input {
+  max-width: 260px;
+  width: 100%;
+}
+
+.search-input input {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 2px solid var(--brown);
+  font-size: 0.9rem;
+}
+
+/* rarity pills */
+.shop-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-pill {
+  border-radius: 999px;
+  border: 2px solid var(--brown);
+  background: var(--card);
+  padding: 5px 11px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.18s;
+}
+
+.filter-pill-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.filter-pill[data-rarity="common"] .filter-pill-dot { background: var(--rarity-common); }
+.filter-pill[data-rarity="rare"] .filter-pill-dot { background: var(--rarity-rare); }
+.filter-pill[data-rarity="epic"] .filter-pill-dot { background: var(--rarity-epic); }
+.filter-pill[data-rarity="legendary"] .filter-pill-dot { background: var(--rarity-legendary); }
+.filter-pill[data-rarity="mythic"] .filter-pill-dot { background: var(--rarity-mythic); }
+
+.filter-pill.active {
+  background: var(--brown);
+  color: #fff4df;
+}
+
+/* SHOP GRID */
+.shop {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 6px;
+}
+
+.shop-empty {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-align: center;
+  margin-top: 18px;
+}
+
+/* SHOP ITEM CARD */
+.shop-item {
+  background: var(--card);
+  border: 3px solid var(--brown);
+  border-radius: 22px;
+  padding: 14px 14px 14px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.shop-item-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.shop-item-figure {
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  background: var(--card-soft);
+  border: 3px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.shop-item-title {
+  flex: 1;
+}
+
+.shop-item-title h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.shop-item-sub {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin-top: 3px;
+}
+
+.shop-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  margin-top: 6px;
+}
+
+.shop-item-footer span {
+  font-weight: 600;
+}
+
+.shop-item-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #4e79a7;
+  color: #fff;
+  font-size: 0.8rem;
+  border: none;
+}
+
+.shop-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 7px 0 rgba(0,0,0,0.18);
+}
+
+.shop-item.selected {
+  border-color: var(--accent);
+  box-shadow: 0 9px 0 rgba(0,0,0,0.2);
+}
+
+/* rarity glow ring */
+.shop-item .rarity-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+
+.rarity-common    { box-shadow: 0 0 0 2px rgba(192,196,207,0.6), 0 0 18px rgba(192,196,207,0.7); }
+.rarity-rare      { box-shadow: 0 0 0 2px rgba(78,121,167,0.7), 0 0 22px rgba(78,121,167,0.9); }
+.rarity-epic      { box-shadow: 0 0 0 2px rgba(155,89,182,0.7), 0 0 24px rgba(155,89,182,0.95); }
+.rarity-legendary { box-shadow: 0 0 0 2px rgba(241,196,15,0.8), 0 0 28px rgba(241,196,15,1); }
+.rarity-mythic    { box-shadow: 0 0 0 2px rgba(232,93,155,0.85), 0 0 32px rgba(232,93,155,1); }
+
+/* rarity badge */
+.rarity-badge {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(255,255,255,0.95);
+  border: 2px solid var(--brown);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rarity-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+/* GOAL CALCULATOR */
+label {
+  font-weight: 600;
+  margin-top: 14px;
+  display: block;
+  font-size: 0.9rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 14px;
+  border: 2px solid var(--brown);
+  font-size: 0.95rem;
+  background: #fffdf7;
+}
+
+body.dark input,
+body.dark select {
+  background: #261f19;
+}
+
+input:focus, select:focus, .search-input input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(232,93,93,0.35);
+  border-color: var(--accent);
+}
+
+.goal-summary {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  opacity: 0.9;
+}
+
+.goal-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 2px dashed var(--brown);
+}
+
+/* main button */
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 18px;
+  border: none;
+  background: linear-gradient(135deg, #ff7a7a, var(--accent));
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.18);
+  font-size: 1rem;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 11px 0 rgba(0,0,0,0.2);
+}
+
+button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+}
+
+/* progress */
+.progress {
+  margin-top: 18px;
+  background: var(--progress-bg);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 20px;
+  width: 0%;
+  background: linear-gradient(90deg, #ffd36a, #ff9b57);
+  transition: width 1.2s ease;
+}
+
+/* stats row */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.stat-pill {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-out;
+  z-index: 20;
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: var(--card);
+  border-radius: 26px;
+  border: 4px solid var(--brown);
+  padding: 22px 18px 20px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  transform: scale(0.9) translateY(10px);
+  transition: transform 0.25s ease-out;
+}
+
+.modal.active .modal-box {
+  transform: scale(1) translateY(0);
+}
+
+.modal-stats {
+  font-size: 0.95rem;
+  margin: 8px 0 14px;
+}
+
+/* cookie rain */
+.cookie {
+  position: fixed;
+  top: -30px;
+  font-size: 26px;
+  animation: fall 2.5s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(120vh) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+/* footer */
+footer {
+  text-align: center;
+  opacity: 0.75;
+  font-size: 0.85rem;
+  padding-bottom: 18px;
+}
+
+/* responsive tweaks */
+@media (max-width: 640px) {
+  .header-pill {
+    padding: 12px 40px;
+    font-size: 1.3rem;
+  }
+  .dialogue {
+    align-items: flex-start;
+  }
+  .dialogue img {
+    width: 48px;
+    height: 48px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+  <div class="header">
+    <div class="header-sub">Night Shift · Flavortown</div>
+    <div class="header-pill">FGS · Kitchen</div>
+    <div class="toggle" id="themeToggle" title="Toggle Night Shift">🌙</div>
+  </div>
+
+  <div class="container">
+
+    <div class="dialogue">
+      <img src="flavortown_logo.png" alt="Flavortown logo">
+      <p>Chef! Pick a reward and let’s plan the grind 🍪🔥</p>
+    </div>
+
+    <!-- SHOP / GOALS TABS -->
+    <div class="card">
+      <div class="shop-bar-row">
+        <div class="shop-tabs">
+          <button class="shop-tab active" id="tabShop">Shop</button>
+          <button class="shop-tab secondary" id="tabGoals">Goals</button>
+        </div>
+        <div class="filter-bar">
+          <!-- Category select (replaces old chip) -->
+          <select id="categorySelect" class="filter-select">
+            <option value="all">Category: All</option>
+            <option value="grants">Grants</option>
+            <option value="hq">HQ</option>
+            <option value="digital">Digital</option>
+            <option value="local">Locally Fulfilled</option>
+            <option value="club">Made by Hack Clubbers</option>
+          </select>
+
+          <!-- Sort select -->
+          <select id="sortSelect" class="filter-select">
+            <option value="price-asc">Sort by: Prices ⬇ (Low → High)</option>
+            <option value="price-desc">Prices ⬆ (High → Low)</option>
+            <option value="alpha-asc">Alphabetical A → Z</option>
+            <option value="alpha-desc">Alphabetical Z → A</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-content-row">
+        <div class="search-input">
+          <input id="search" type="text" placeholder="Search item">
+        </div>
+        <div class="shop-filters">
+          <button class="filter-pill active" data-rarity="all">
+            <div class="filter-pill-dot" style="background: linear-gradient(90deg,var(--rarity-common),var(--rarity-rare),var(--rarity-epic),var(--rarity-legendary),var(--rarity-mythic));"></div>
+            All
+          </button>
+          <button class="filter-pill" data-rarity="common">
+            <div class="filter-pill-dot"></div> Common
+          </button>
+          <button class="filter-pill" data-rarity="rare">
+            <div class="filter-pill-dot"></div> Rare
+          </button>
+          <button class="filter-pill" data-rarity="epic">
+            <div class="filter-pill-dot"></div> Epic
+          </button>
+          <button class="filter-pill" data-rarity="legendary">
+            <div class="filter-pill-dot"></div> Legendary
+          </button>
+          <button class="filter-pill" data-rarity="mythic">
+            <div class="filter-pill-dot"></div> Mythic
+          </button>
+        </div>
+      </div>
+
+      <!-- SHOP GRID (tab 1) -->
+      <div id="shopPanel">
+        <div class="shop" id="shop"></div>
+        <div class="shop-empty" id="shopEmpty" hidden>
+          No goodies match that search. Try another keyword or rarity.
+        </div>
+      </div>
+
+      <!-- GOALS PANEL (tab 2) -->
+      <div id="goalsPanel" style="display:none; margin-top:12px;">
+        <p style="font-size:0.9rem; color:var(--text-soft);">
+          This will show your saved goal items later. For now, use the calculator below to plan one goal.
+        </p>
+      </div>
+    </div>
+
+    <!-- GOAL CALCULATOR -->
+    <div class="card">
+      <h2>🎯 Goal Calculator</h2>
+
+      <label>🎁 Goal name</label>
+      <input id="goalName" type="text" placeholder="Select an item or type your own">
+
+      <label>🍪 Cookies needed</label>
+      <input id="cookies" type="number" min="1">
+
+      <label>📅 Days remaining</label>
+      <input id="days" type="number" min="1">
+
+      <label>🛠 Project quality</label>
+      <select id="quality">
+        <option value="1">Low effort</option>
+        <option value="1.5">Average</option>
+        <option value="2">High quality</option>
+      </select>
+
+      <div class="goal-summary">
+        <div class="goal-chip">
+          Tip: click a shop card to auto-fill cookies and hours.
+        </div>
+      </div>
+
+      <button id="planBtn">Cook up a plan 🍳</button>
+
+      <div class="progress">
+        <div class="progress-bar" id="bar"></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-pill">⏱ Total hours: <span id="statTotalHours">0</span></div>
+        <div class="stat-pill">📅 Hours/day: <span id="statHoursPerDay">0</span></div>
+        <div class="stat-pill">🍪 Cookies/hour: <span id="statCookiesPerHour">0</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>FGS · Built for Hack Club Flavortown 🧑‍🍳</footer>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h2>🍪 Your Cooking Plan</h2>
+    <p class="modal-stats" id="modalStats"></p>
+    <button onclick="closeModal()">Back to kitchen 👨‍🍳</button>
+  </div>
+</div>
+
+<script>
+const shopItemsBase = [
+ { name:"Campfire Flagship Travel Grant", cookies:15, hours:1,  category:"grants" },
+ { name:"Chrome Webstore Licence",        cookies:20, hours:2,  category:"digital" },
+ { name:"Random Paper from HQ",           cookies:22, hours:2,  category:"hq" },
+ { name:"Pile Of Stickers",               cookies:25, hours:2,  category:"hq" },
+ { name:"AI Credits",                     cookies:35, hours:3,  category:"digital" },
+ { name:"Cloudflare Credits",             cookies:35, hours:3,  category:"digital" },
+ { name:"PCB Manufacturing Credits",      cookies:35, hours:3,  category:"local" },
+ { name:"3D Printing Credits",            cookies:35, hours:3,  category:"local" },
+ { name:"Hot Chocolate!",                 cookies:40, hours:4,  category:"local" },
+ { name:"Cloud Hosting Credits",          cookies:40, hours:4,  category:"digital" },
+ { name:"Free Domain",                    cookies:40, hours:4,  category:"digital" },
+ { name:"iFixit Credits",                 cookies:45, hours:4,  category:"local" },
+ { name:"Hack Club Pin",                  cookies:60, hours:6,  category:"hq" },
+ { name:"Smolhåj",                        cookies:83, hours:8,  category:"hq" },
+ { name:"HackDucky",                      cookies:100, hours:10, category:"club" },
+ { name:"HUION Drawing Tablet",           cookies:104, hours:10, category:"club" },
+ { name:"Campfire Flagship T-Shirt",      cookies:124, hours:12, category:"hq" },
+ { name:"Pinecil",                        cookies:140, hours:14, category:"club" },
+ { name:"GitHub Notebook",                cookies:143, hours:14, category:"digital" },
+ { name:"GitHub Keycaps",                 cookies:180, hours:18, category:"digital" },
+ { name:"Yubikey",                        cookies:206, hours:20, category:"digital" },
+ { name:"Factorio",                       cookies:210, hours:21, category:"digital" },
+ { name:"Mullvad VPN (6 mo)",            cookies:216, hours:21, category:"digital" },
+ { name:"Icepi Zero",                     cookies:263, hours:26, category:"club" },
+ { name:"$50 Proton Credit",              cookies:300, hours:30, category:"digital" },
+ { name:"PO-14 Synth",                    cookies:335, hours:33, category:"club" },
+ { name:"PO-24 Synth",                    cookies:360, hours:36, category:"club" },
+ { name:"Open Sauce 2026 Ticket",         cookies:450, hours:45, category:"grants" },
+ { name:"Apple Pencil Pro",               cookies:452, hours:45, category:"club" },
+ { name:"Raspberry Pi 5",                 cookies:455, hours:45, category:"club" },
+ { name:"Magic Keyboard",                 cookies:800, hours:80, category:"club" },
+ { name:"Polaroid Go Gen 2",              cookies:862, hours:86, category:"club" },
+ { name:"Bambu Lab A1 Mini",              cookies:1050, hours:105, category:"club" },
+ { name:"Mac Mini",                       cookies:3000, hours:300, category:"club" },
+ { name:"MacBook Air",                    cookies:4995, hours:499, category:"club" }
+];
+
+const cookiesInput = document.getElementById("cookies");
+const daysInput   = document.getElementById("days");
+const quality     = document.getElementById("quality");
+const modal       = document.getElementById("modal");
+const modalStats  = document.getElementById("modalStats");
+const bar         = document.getElementById("bar");
+const goalNameInput = document.getElementById("goalName");
+
+const shopEl      = document.getElementById("shop");
+const shopEmptyEl = document.getElementById("shopEmpty");
+const searchInput = document.getElementById("search");
+const filterPills = Array.from(document.querySelectorAll(".filter-pill"));
+
+const statTotalHoursEl    = document.getElementById("statTotalHours");
+const statHoursPerDayEl   = document.getElementById("statHoursPerDay");
+const statCookiesPerHourEl= document.getElementById("statCookiesPerHour");
+
+const themeToggle   = document.getElementById("themeToggle");
+const tabShop       = document.getElementById("tabShop");
+const tabGoals      = document.getElementById("tabGoals");
+const shopPanel     = document.getElementById("shopPanel");
+const goalsPanel    = document.getElementById("goalsPanel");
+const categorySelect= document.getElementById("categorySelect");
+const sortSelect    = document.getElementById("sortSelect");
+
+const THEME_KEY     = "fgs-theme";
+const LAST_ITEM_KEY = "fgs-last-item";
+
+const rarityConfig = [
+  { key: "common",    label: "Common",    min: 0,   max: 49 },
+  { key: "rare",      label: "Rare",      min: 50,  max: 149 },
+  { key: "epic",      label: "Epic",      min: 150, max: 399 },
+  { key: "legendary", label: "Legendary", min: 400, max: 999 },
+  { key: "mythic",    label: "Mythic",    min: 1000,max: Infinity }
+];
+
+function getRarity(cookies) {
+  return rarityConfig.find(r => cookies >= r.min && cookies <= r.max) || rarityConfig[0];
+}
+
+function emojiForItem(name) {
+  const lower = name.toLowerCase();
+  if (lower.includes("grant") || lower.includes("travel")) return "✈️";
+  if (lower.includes("webstore") || lower.includes("licence")) return "🌐";
+  if (lower.includes("paper")) return "📄";
+  if (lower.includes("sticker")) return "✨";
+  if (lower.includes("ai")) return "🤖";
+  if (lower.includes("cloudflare")) return "🌀";
+  if (lower.includes("pcb")) return "🔧";
+  if (lower.includes("3d")) return "🧱";
+  if (lower.includes("hot chocolate")) return "☕";
+  if (lower.includes("hosting")) return "☁️";
+  if (lower.includes("domain")) return "🌍";
+  if (lower.includes("ifixit")) return "🪛";
+  if (lower.includes("pin")) return "📌";
+  if (lower.includes("smolh") || lower.includes("smolhåj")) return "🦈";
+  if (lower.includes("duck")) return "🦆";
+  if (lower.includes("tablet")) return "🎨";
+  if (lower.includes("t-shirt") || lower.includes("shirt")) return "👕";
+  if (lower.includes("pinecil") || lower.includes("solder")) return "🔥";
+  if (lower.includes("notebook")) return "📓";
+  if (lower.includes("keycaps") || lower.includes("keyboard")) return "⌨️";
+  if (lower.includes("yubikey") || lower.includes("security")) return "🔐";
+  if (lower.includes("factorio")) return "⚙️";
+  if (lower.includes("vpn")) return "🕶️";
+  if (lower.includes("zero")) return "🧊";
+  if (lower.includes("proton")) return "📧";
+  if (lower.includes("synth")) return "🎛️";
+  if (lower.includes("ticket")) return "🎟️";
+  if (lower.includes("apple pencil")) return "🖊️";
+  if (lower.includes("raspberry pi")) return "🥧";
+  if (lower.includes("polaroid")) return "📸";
+  if (lower.includes("bambu")) return "🖨️";
+  if (lower.includes("mac mini")) return "🖥️";
+  if (lower.includes("macbook")) return "💻";
+  return "🎁";
+}
+
+let currentRarityFilter = "all";
+
+function getFilteredAndSortedItems() {
+  const q = (searchInput.value || "").trim().toLowerCase();
+  const category = categorySelect.value;   // all / grants / hq / digital / local / club
+  const sort = sortSelect.value;          // price-asc, price-desc, alpha-asc, alpha-desc
+
+  let items = shopItemsBase.filter(item => {
+    const rarity = getRarity(item.cookies);
+    if (currentRarityFilter !== "all" && rarity.key !== currentRarityFilter) return false;
+    if (q && !item.name.toLowerCase().includes(q)) return false;
+    if (category !== "all" && item.category !== category) return false;
+    return true;
+  });
+
+  items = [...items]; // copy before sort
+
+  if (sort === "price-asc") {
+    items.sort((a,b) => a.cookies - b.cookies);
+  } else if (sort === "price-desc") {
+    items.sort((a,b) => b.cookies - a.cookies);
+  } else if (sort === "alpha-asc") {
+    items.sort((a,b) => a.name.localeCompare(b.name));
+  } else if (sort === "alpha-desc") {
+    items.sort((a,b) => b.name.localeCompare(a.name));
+  }
+  return items;
+}
+
+function renderShop() {
+  const items = getFilteredAndSortedItems();
+  shopEl.innerHTML = "";
+  const lastItemName = localStorage.getItem(LAST_ITEM_KEY) || "";
+  let any = false;
+
+  items.forEach(item => {
+    const rarity = getRarity(item.cookies);
+    const card = document.createElement("div");
+    card.className = "shop-item";
+    card.dataset.cookies = item.cookies;
+    card.dataset.hours = item.hours;
+    card.dataset.name = item.name;
+    card.dataset.rarity = rarity.key;
+
+    const isSelected = lastItemName === item.name;
+    if (isSelected) card.classList.add("selected");
+
+    const emoji = emojiForItem(item.name);
+    const rarityClass = "rarity-" + rarity.key;
+
+    card.innerHTML = `
+      <div class="rarity-ring ${rarityClass}"></div>
+      <div class="rarity-badge">
+        <span class="rarity-badge-dot" style="background: var(--rarity-${rarity.key});"></span>
+        <span>${rarity.label}</span>
+      </div>
+      <div class="shop-item-header">
+        <div class="shop-item-figure">${emoji}</div>
+        <div class="shop-item-title">
+          <h3>${item.name}</h3>
+          <div class="shop-item-sub">${item.hours} hours of cozy grind</div>
+        </div>
+      </div>
+      <div class="shop-item-footer">
+        <span>${item.cookies} 🍪</span>
+        <div class="shop-item-btn">Order now</div>
+      </div>
+    `;
+
+    card.addEventListener("click", () => selectItemCard(card));
+    shopEl.appendChild(card);
+    any = true;
+  });
+
+  shopEmptyEl.hidden = any;
+  if (!any) {
+    localStorage.removeItem(LAST_ITEM_KEY);
+  }
+}
+
+function selectItemCard(card) {
+  document.querySelectorAll(".shop-item.selected").forEach(el => el.classList.remove("selected"));
+  card.classList.add("selected");
+
+  const cookies = Number(card.dataset.cookies || 0);
+  const hours   = Number(card.dataset.hours || 0);
+  const name    = card.dataset.name || "";
+
+  cookiesInput.value = cookies || "";
+  daysInput.value    = hours || "";
+  if (!goalNameInput.value) {
+    goalNameInput.value = name;
+  }
+
+  localStorage.setItem(LAST_ITEM_KEY, name);
+
+  bar.style.width = "0%";
+  statTotalHoursEl.textContent     = "0";
+  statHoursPerDayEl.textContent    = "0";
+  statCookiesPerHourEl.textContent = "0";
+}
+
+/* calculation */
+function calculate() {
+  const cookies = +cookiesInput.value;
+  const days    = +daysInput.value;
+  const q       = +quality.value;
+  if (!cookies || !days) return;
+
+  const rate  = 10 * q;
+  const total = cookies / rate;
+  const perDay = total / days;
+
+  statTotalHoursEl.textContent     = total.toFixed(1);
+  statHoursPerDayEl.textContent    = perDay.toFixed(2);
+  statCookiesPerHourEl.textContent = rate.toFixed(1);
+
+  const goalName = (goalNameInput.value || "your goal").trim();
+
+  modalStats.innerHTML = `
+    🎁 <b>${goalName}</b><br>
+    🍪 <b>${cookies}</b> cookies<br>
+    ⏱ <b>${total.toFixed(1)}</b> hrs total<br>
+    📅 <b>${perDay.toFixed(2)}</b> hrs/day<br>
+    ⚡ <b>${rate.toFixed(1)}</b> cookies/hr
+  `;
+
+  bar.style.width = "100%";
+  cookieRain(28);
+  modal.classList.add("active");
+}
+
+function cookieRain(n) {
+  for (let i = 0; i < n; i++) {
+    const c = document.createElement("div");
+    c.className = "cookie";
+    c.textContent = "🍪";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.animationDelay = (Math.random() * 0.8) + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+
+function closeModal() {
+  modal.classList.remove("active");
+}
+
+/* theme */
+function applyThemeFromStorage() {
+  const stored = localStorage.getItem(THEME_KEY);
+  if (stored === "dark") {
+    document.body.classList.add("dark");
+    themeToggle.textContent = "☀️";
+  } else {
+    document.body.classList.remove("dark");
+    themeToggle.textContent = "🌙";
+  }
+}
+
+function toggleDark() {
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+  themeToggle.textContent = isDark ? "☀️" : "🌙";
+}
+
+/* rarity filter buttons */
+filterPills.forEach(pill => {
+  pill.addEventListener("click", () => {
+    const rarity = pill.dataset.rarity || "all";
+    currentRarityFilter = rarity;
+    filterPills.forEach(p => p.classList.toggle("active", p === pill));
+    renderShop();
+  });
+});
+
+/* search, category, sort */
+searchInput.addEventListener("input", renderShop);
+categorySelect.addEventListener("change", renderShop);
+sortSelect.addEventListener("change", renderShop);
+
+/* tabs behaviour */
+tabShop.addEventListener("click", () => {
+  tabShop.classList.add("active");
+  tabGoals.classList.remove("active");
+  shopPanel.style.display  = "";
+  goalsPanel.style.display = "none";
+});
+
+tabGoals.addEventListener("click", () => {
+  tabGoals.classList.add("active");
+  tabShop.classList.remove("active");
+  shopPanel.style.display  = "none";
+  goalsPanel.style.display = "";
+});
+
+/* init */
+document.getElementById("planBtn").addEventListener("click", calculate);
+themeToggle.addEventListener("click", toggleDark);
+
+applyThemeFromStorage();
+renderShop();
+</script>
+
+</body>
+</html>
