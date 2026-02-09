@@ -1,4 +1,4 @@
-# Project Goal Setter – Work Hours Calculator
+# FGS: Flavortown Goal Setter ( Work Hours Calculator )
 
 This project is a **goal-setting tool** designed to help creators, developers, and students plan their daily working hours based on what they want to achieve or buy.
 
