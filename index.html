@@ -26,7 +26,7 @@
 }
 
 body.dark {
-  --bg: #121013;          /* slightly lighter black */
+  --bg: #121013;          
   --bg-soft: #18151a;
   --card: #1f1b17;
   --card-soft: #25201a;
@@ -40,10 +40,10 @@ body.dark {
   --green-dark: #5a7f36;
   --accent: #ff7a7a;
   --accent-soft: #ffb09e;
-  background-color: #121013;                     /* light black screen */
-  background-image: url("pattern.webp");         /* pattern as bg */
-  background-repeat: repeat;                     /* tiling pattern */
-  background-size: auto;                         /* use pattern size */
+  background-color: #121013;                     
+  background-image: url("pattern.webp");         
+  background-repeat: repeat;                     
+  background-size: auto;                         
   background-position: center;
 }
 
@@ -53,7 +53,7 @@ body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  /* DAY: yellow + bg.png */
+  
   background-color: #E7D4B1;
   background-image: url("bg.png");
   background-repeat: no-repeat;
@@ -65,20 +65,20 @@ body {
   min-height: 100vh;
 }
 
-/* PAGE SHELL CENTERED */
+
 .page {
   max-width: 1120px;
   margin: 0 auto;
   padding: 0 16px 56px;
 }
 
-/* HEADER WRAPPER */
+
 .header {
   margin: 22px 0 8px;
   position: relative;
 }
 
-/* Hack Club-style heading pill centered */
+
 .kitchen-index__header {
   display: flex;
   justify-content: center;
@@ -105,7 +105,7 @@ body {
   padding: 14px 72px;
   border-radius: 999px;
 
-  /* pattern + blue overlay */
+
   background-image: url("pattern.webp");
   background-size: cover;
   background-position: center;
@@ -119,18 +119,18 @@ body {
   cursor: default;
 }
 
-/* subtle blue overlay so text stays readable */
+
 .ui-heading__surface::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: rgba(78, 121, 167, 0.78); /* semi‑transparent blue */
+  background: rgba(78, 121, 167, 0.78);
   pointer-events: none;
 }
 
 .ui-heading__title {
-  position: relative; /* above overlay */
+  position: relative;
 }
 
 
@@ -141,7 +141,7 @@ body {
   font-size: 1.6rem;
 }
 
-/* small badge on left */
+
 .header-sub {
   position: absolute;
   left: 12px;
@@ -155,7 +155,7 @@ body {
   color: var(--text-soft);
 }
 
-/* Theme toggle */
+
 .toggle {
   position: absolute;
   right: 18px;
@@ -181,18 +181,17 @@ body {
   box-shadow: 0 9px 0 rgba(0,0,0,0.18);
 }
 
-/* MAIN LAYOUT */
+
 .container {
   max-width: 760px;
   margin: 0 auto;
 }
-
-/* slogan box with png */
+ 
 .hero-card {
   position: relative;
   overflow: hidden;
 
-  background: #f8e3b8;                 /* fallback color */
+  background: #f8e3b8;                 
   border-radius: 26px;
   border: 4px solid var(--brown);
   padding: 20px 20px 18px;
@@ -203,7 +202,7 @@ body {
   gap: 16px;
   align-items: center;
 
-  /* hero-bg image as block background */
+  
   background-image: url("hero-bg.webp");
   background-size: cover;
   background-position: center;
@@ -245,7 +244,7 @@ body {
   color: var(--text-soft);
 }
 
-/* generic card */
+
 .card {
   background: #fff4df;
   border-radius: 26px;
@@ -266,7 +265,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-/* GOAL CALCULATOR */
+
 label {
   font-weight: 600;
   margin-top: 14px;
@@ -295,7 +294,7 @@ input:focus, select:focus {
   border-color: var(--accent);
 }
 
-/* blue choose button */
+
 .choose-btn {
   margin-top: 8px;
   width: 100%;
@@ -334,7 +333,7 @@ input:focus, select:focus {
   border: 2px dashed var(--brown);
 }
 
-/* main calculate button */
+
 button.main-btn {
   margin-top: 20px;
   width: 100%;
@@ -355,7 +354,7 @@ button.main-btn:hover {
   box-shadow: 0 11px 0 rgba(0,0,0,0.2);
 }
 
-/* progress */
+
 .progress {
   margin-top: 18px;
   background: var(--progress-bg);
@@ -370,7 +369,7 @@ button.main-btn:hover {
   transition: width 1.2s ease;
 }
 
-/* stats row */
+
 .stats-row {
   display: flex;
   flex-wrap: wrap;
@@ -386,7 +385,7 @@ button.main-btn:hover {
   border: 1px solid rgba(0,0,0,0.1);
 }
 
-/* footer */
+
 footer {
   text-align: center;
   opacity: 0.75;
@@ -394,7 +393,7 @@ footer {
   padding-bottom: 18px;
 }
 
-/* generic modal shell (used for both result + shop picker) */
+
 .modal {
   position: fixed;
   inset: 0;
@@ -413,7 +412,7 @@ footer {
   pointer-events: auto;
 }
 
-/* result modal */
+
 .modal-box {
   background: #fff4df;
   border-radius: 26px;
@@ -440,7 +439,7 @@ footer {
   margin: 8px 0 14px;
 }
 
-/* shop picker modal */
+
 .shop-modal-box {
   background: var(--card);
   border-radius: 26px;
@@ -485,7 +484,7 @@ footer {
   padding-right: 4px;
 }
 
-/* each item row */
+
 .shop-option {
   display: flex;
   align-items: center;
@@ -538,7 +537,7 @@ footer {
   font-size: 0.9rem;
 }
 
-/* cookie emoji for result modal */
+
 .cookie {
   position: fixed;
   top: -30px;
@@ -554,7 +553,7 @@ footer {
   }
 }
 
-/* responsive tweaks */
+
 @media (max-width: 640px) {
   .ui-heading__surface {
     padding: 12px 40px;
@@ -583,7 +582,7 @@ footer {
   <div class="header">
     
 
-    <!-- New FGS Kitchen blue pill heading -->
+    
     <div class="kitchen-index__header">
       <div class="ui-heading ui-heading--blue ui-heading--full">
         <div class="ui-heading__stack">
