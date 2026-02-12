@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang=""en">
+<head>
+    <meta charset=""UTF-8">
+    <title>FGS  Flavortown Goal Setter</title><title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+          --bg: #f5e3c2;
+            --bg-soft: #f2d9ae;
+              --card: #fff4df;
+                --card-soft: #ffe9c4;
+                  --blue: #4e79a7;
+                    --blue-dark: #3c638f;
+                      --green: #76a94b;
+                        --green-dark: #557932;
+                          --brown: #7b4a2f;
+                            --accent: #e85d5d;
+                              --accent-soft: #ff9b8a;
+                                --text: #3b2b1c;
+                                  --text-soft: #7a6045;
+                                    --progress-bg: #e8d8b8;
+    }
+
+    body.dark {
+          --bg: #f2d9ae;          
+            --bg-soft: #f2d9ae;
+              --card: #c39567;
+                --card-soft: #f2d9ae;
+                  --brown: #caa66b;
+                    --text: #000000;
+                      --text-soft: #d2c0a2;
+                        --progress-bg: #dd8080;
+                          --blue: #4e79a7;
+                            --blue-dark: #375373;
+                              --green: #76a94b;
+                                --green-dark: #5a7f36;
+                                  --accent: #ff7a7a;
+                                    --accent-soft: #ffb09e;
+                                      background-color: #4d0505;                     
+                                        background-image: url("pattern.webp");         
+                                          background-repeat: repeat;                     
+                                            background-size: auto;                         
+                                              background-position: center;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+          margin: 0;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+              
+              background-color: #E7D4B1;
+                background-image: url("bg.png");
+                  background-repeat: no-repeat;
+                    background-size: cover;
+                      background-position: center;
+
+                        color: var(--text);
+                          transition: background-color 0.4s, color 0.4s;
+                            min-height: 100vh;
+    }
+
+
+    .page {
+          max-width: 1120px;
+            margin: 0 auto;
+              padding: 0 16px 56px;
+    }
+
+
+    .header {
+          margin: 22px 0 8px;
+            position: relative;
+    }
+
+
+    .kitchen-index__header {
+          display: flex;
+            justify-content: center;
+    }
+
+    .ui-heading.ui-heading--blue.ui-heading--full {
+          display: inline-block;
+    }
+
+    .ui-heading__stack {
+          position: relative;
+            display: inline-flex;
+    }
+
+    .ui-heading__backdrop {
+          position: absolute;
+            inset: 4px -6px -8px;
+              border-radius: 999px;
+                background: rgba(245, 143, 143, 0.18);
+    }
+
+    .ui-heading__surface {
+          position: relative;
+            padding: 14px 72px;
+              border-radius: 999px;
+
+
+                background-image: url("pattern.webp");
+                  background-size: cover;
+                    background-position: center;
+                      background-repeat: no-repeat;
+                        background-color: var(--blue);
+
+                          box-shadow:inset    inset 0 -5px 0 var(--blue-dark),
+                              0 8px 0 rgba(0, 0, 0, 0.22);
+                                color: #ffffff;
+                                  cursor: default;
+    }
+
+
+    .ui-heading__surface::before {
+          content: "";
+            position: absolute;
+              inset: 0;
+                border-radius: inherit;
+                  background: rgba(78, 121, 167, 0.78);
+                    pointer-events: none;
+    }
+
+    .ui-heading__title {
+          position: relative;
+    }
+
+
+
+    .ui-heading__title {
+          margin: 0;
+            font-family: "Baloo 2", cursive;
+              font-size: 1.6rem;
+    }
+
+
+    .header-sub {
+          position: absolute;
+            left: 12px;
+              top: 50%;
+                transform: translateY(-50%);
+                  font-size: 0.78rem;
+                    padding: 6px 12px;
+                      border-radius: 999px;
+                        background: rgba(255,255,255,0.85);
+                          border: 2px solid var(--brown);
+                            color: var(--text-soft);
+    }
+
+
+    .toggle {
+          position: absolute;
+            right: 18px;
+              top: 50%;
+                transform: translateY(-50%);
+                  cursor: pointer;
+                    font-size: 1.3rem;
+                      width: 44px;
+                        height: 44px;
+                          border-radius: 50%;
+                            border: 3px solid var(--brown);
+                              display: flex;
+                                align-items: center;
+                                  justify-content: center;
+                                    background: var(--card);
+                                      box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+                                        user-select: none;
+                                          transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+    }
+
+    .toggle:hover {
+          transform: translateY(calc(-50% - 2px));
+            box-shadow: 0 9px 0 rgba(0,0,0,0.18);
+    }
+
+
+    .container {
+          max-width: 760px;
+            margin: 0 auto;
+    }
+     
+    .hero-card {
+          positION: RELAT  flex-shrink: 0;
+            width: 80px;
+              height: 80px;
+                border-radius: 22px;
+                  background: var(--card);
+                    border: 3px solid rgba(0,0,0,0.08);
+                      display: flex;
+                        align-items: center;
+                          justify-content: center;
+    }
+
+    .hero-image-wrap img {
+          width: 64px;
+            height: 64px;
+              object-fit: contain;
+    }
+
+    .hero-text {
+          flex: 1;
+    }
+
+    .hero-text h1 {
+          margin: 0 0 6px;
+            font-family: "Baloo 2", cursive;
+              font-size: 1.4rem;
+    }
+
+    .hero-text p {
+          margin: 0;
+            font-size: 0.96rem;
+              color: var(--text-soft);
+    }
+
+
+    .card {
+          background: #fff4df;
+            border-radius: 26px;
+              border: 4px solid var(--brown);
+                padding: 22px 20px 24px;
+                  margin-bottom: 26px;
+                    box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+
+                      background-image: url("hero-bg.webp");
+                        background-size: cover;
+                          background-position: center;
+                            background-repeat: no-repeat;
+    }
+
+    h2 {
+          font-family: "Baloo 2", cursive;
+            margin-top: 0;
+              margin-bottom: 10px;
+    }
+
+
+    label {
+          font-weight: 600;
+            margin-top: 14px;
+              display: block;
+                font-size: 0.9rem;
+    }
+
+    input, select {
+          width: 100%;
+            padding: 10px 12px;
+              margin-top: 6px;
+                border-radius: 14px;
+                  border: 2px solid var(--brown);
+                    font-size: 0.95rem;
+                      background: #fffdf7;
+    }
+
+    body.dark input,
+    body.dark select {
+          background: #a65555;
+    }
+
+    input:focus, select:focus {
+          outline: none;
+            box-shadow: 0 0 0 3px rgba(62, 12, 12, 0.35);
+              border-color: var(--accent);
+    }
+
+
+    .choose-btn {
+          margin-top: 8px;
+            width: 100%;
+              padding: 12px;
+                border-radius: 16px;
+                  border: none;
+                    background: linear-gradient(135deg, #6ba0ff, #4e79a7);
+                      color: white;
+                        font-weight: 600;
+                          font-size: 0.98rem;
+                            cursor: pointer;
+                              box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+                                display: inline-flex;
+                                  align-items: center;
+                                    justify-content: center;
+                                      gap: 6px;
+    }
+
+    .choose-btn:hover {
+          transform: translateY(-2px);
+            box-shadow: 0 8px 0 rgba(0,0,0,0.18);
+    }
+
+    .goal-summary {
+          margin-top: 14px;
+            font-size: 0.85rem;
+              display: flex;
+                flex-wrap: wrap;
+                  gap: 8px;
+                    opacity: 0.9;
+    }
+
+    .goal-chip {
+          padding: 4px 10px;
+            border-radius: 999px;
+              border: 2px dashed var(--brown);
+    }
+    
+    
+    button.main-btn {
+          margin-top: 20px;
+            width: 100%;
+              padding: 14px;
+                border-radius: 18px;
+                  border: none;
+                    background: linear-gradient(135deg, #ff7a7a, var(--accent));
+                      color: white;
+                        font-weight: 700;
+                          cursor: pointer;
+                            box-shadow: 0 8px 0 rgba(0,0,0,0.18);
+                              font-size: 1rem;
+                                transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    button.main-btn:hover {
+          transform: translateY(-3px);
+            box-shadow: 0 11px 0 rgba(0,0,0,0.2);
+    }
+
+
+    .progress {
+          margin-top: 18px;
+            background: var(--progress-bg);
+              border-radius: 16px;
+                overflow: hidden;
+    }
+
+    .progress-bar {
+          height: 20px;
+            width: 0%;
+              background: linear-gradient(90deg, #ffd36a, #ff9b57);
+                transition: width 1.2s ease;
+    }
+
+
+    .stats-row {
+          display: flex;
+            flex-wrap: wrap;
+              gap: 8px;
+                margin-top: 10px;
+                  font-size: 0.85rem;
+    }
+
+    .stat-pill {
+          padding: 4px 9px;
+            border-radius: 999px;
+              background: rgba(255,255,255,0.7);
+                border: 1px solid rgba(0,0,0,0.1);
+    }
+
+
+    footer {
+          text-align: center;
+            opacity: 0.75;
+              font-size: 0.85rem;
+                padding-bottom: 18px;
+    }
+
+
+    .modal {
+          position: fixed;
+            inset: 0;
+              background: rgba(0,0,0,0.45);
+                display: flex;
+                  align-items: center;
+                    justify-content: center;
+                      opacity: 0;
+                        pointer-events: none;
+                          transition: opacity 0.25s ease-out;
+                            z-index: 20;
+    }
+
+    .modal.active {
+          opacity: 1;
+            pointer-events: auto;
+    }
+
+
+    .modal-box {
+          background: #fff4df;
+            border-radius: 26px;
+              border: 4px solid var(--brown);
+                padding: 22px 18px 20px;
+                  max-width: 420px;
+                    width: 90%;
+                      text-align: center;
+                        transform: scale(0.9) translateY(10px);
+                          transition: transform 0.25s ease-out;
+
+                            background-image: url("bg-2.png");
+                              background-size: cover;
+                                background-position: center;
+                                  background-repeat: no-repeat;
+    }
+
+    .modal.active .modal-box {
+          transform: scale(1) translateY(0);
+    }
+
+    .modal-stats {
+          font-size: 0.95rem;
+            margin: 8px 0 14px;
+    }
+
+
+    .shop-modal-box {
+          background: var(--card);
+            border-radius: 26px;
+              border: 4px solid var(--brown);
+                padding: 18px 18px 16px;
+                  max-width: 520px;
+                    width: 92%;
+                      max-height: 80vh;
+                        display: flex;
+                          flex-direction: column;
+                            gap: 10px;
+                              transform: scale(0.9) translateY(10px);
+                                transition: transform 0.25s ease-out;
+    }
+
+    .modal.active .shop-modal-box {
+          transform: scale(1) translateY(0);
+    }
+
+    .shop-modal-header {
+          display: flex;
+            justify-content: space-between;
+              align-items: center;
+    }
+
+    .shop-modal-title {
+          font-family: "Baloo 2", cursive;
+            font-size: 1.2rem;
+              margin: 0;
+    }
+
+    .shop-modal-close {
+          border: none;
+            background: transparent;
+              font-size: 1.2rem;
+                cursor: pointer;
+    }
+
+    .shop-modal-list {
+          margin-top: 6px;
+            overflow-y: auto;
+              padding-right: 4px;
+    }
+
+
+    .shop-option {
+          display: flex;
+            align-items: center;
+              gap: 10px;
+                padding: 10px 8px;
+                  border-radius: 16px;
+                    border: 2px solid var(--brown);
+                      background: var(--card-soft);
+                        cursor: pointer;
+                          margin-bottom: 8px;
+    }
+
+    .shop-option:hover {
+          background: #ffe0b9;
+    }
+
+    .shop-option-image-wrap {
+          width: 54px;
+            height: 54px;
+              border-radius: 14px;
+                background: var(--card);
+                  border: 2px solid rgba(0,0,0,0.08);
+                    display: flex;
+                      align-items: center;
+                        justify-content: center;
+    }
+
+    .shop-option-image-wrap img {
+          width: 44px;
+            height: 44px;
+              object-fit: contain;
+    }
+
+    .shop-option-main {
+          flex: 1;
+    }
+
+    .shop-option-name {
+          font-weight: 600;
+            font-size: 0.95rem;
+    }
+
+    .shop-option-meta {
+          font-size: 0.8rem;
+            color: var(--text-soft);
+    }
+
+    .shop-option-price {
+          font-weight: 700;
+            font-size: 0.9rem;
+    }
+
+
+    .cookie {
+          position: fixed;
+            top: -30px;
+              font-size: 26px;
+                animation: fall 2.5s linear forwards;
+                  pointer-events: none;
+    }
+
+    @keyframes fall {
+          to {
+                transform: translateY(120vh) rotate(540deg);
+                    opacity: 0;
+          }
+        }
+
+
+        @media (max-width: 640px) {
+              .ui-heading__surface {
+                    padding: 12px 40px;
+              }
+                .ui-heading__title {
+                        font-size: 1.3rem;
+                }
+                  .hero-card {
+                        align-items: flex-start;
+                  }
+                    .hero-image-wrap {
+                            width: 64px;
+                                height: 64px;
+                    }
+                      .hero-image-wrap img {
+                            width: 52px;
+                                height: 52px;
+                      }
+                    }
+                    </style>
+                    </title><head>
+                        <body>
+
+                            <div class=""page">
+                              <div class="header">
+                                    
+
+                                    
+                                    <div class=""kitchen-index__header">
+                                          <div class="ui-heading ui-heading--blue ui-heading--full">
+                                                    <div class=""ui-heading__stack">
+                                                              <span class="ui-heading__backdrop" aria-hidden="true"></span><span>          <div class="ui-heading__surface">
+                                                                            <h1 class=""ui-heading__title">FGS Kitchen</h1><h1>          </h1><div>        </div><div>      </div><div>    </div><div>
+                                                                                    <div class=""toggle" id=""themeToggle" title=""Toggle Night Shift"></div><div>  </div><div>
+                                                                                          <div class=""container">
+                                                                                            <div class="hero-card">
+                                                                                                      <div class=""hero-image-wrap">
+                                                                                                            <img src="flavortown_logo.png" alt="FGS slogan">
+                                                                                                              </div><div>      <div class="hero-text">
+                                                                                                                        <h1>Cook up your dream reward</h1><h1>        <p>Turn project hours into cookies, then into the prize youve been eyeing in the Flavortown kitchen.</p><p>      </p><div>    </div><div>
+                                                                                                                                <div class=""card">
+                                                                                                                                      
+                                                                                                                                      <h2> Goal Calculator</h2><h2>
+                                                                                                                                              <label> Goal</label><label for="      <button type="button" class="choose-btn" id="chooseGoalBtn">
+                                                                                                                                                        Choose Goal From Shop
+                                                                                                                                                              </label><button>      <input id="goalName" type="text" style="margin-top:8px; display:none;">
+                                                                                                                                                            
+                                                                                                                                                                  <label> Cookies needed</label><label for="      <input id="cookies" type="number" min="1">
+                                                                                                                                                                
+                                                                                                                                                                      <label> Days remaining</label><label for="      <input id="days" type="number" min="1">
+                                                                                                                                                                    
+                                                                                                                                                                          <label> Project quality</label><label for="      <select id="quality">
+                                                                                                                                                                                    <option value=""1">Low effort</option><option value="        <option value="1.5">Average</option><option value="        <option value="2">High quality</option><option value="      </select>
+                                                                                                                                                                                        
+                                                                                                                                                                                              
+                                                                                                                                                                                        
+                                                                                                                                                                                              <button id="planBtn" class="main-btn">Cook up a plan </option><button>
+                                                                                                                                                                                                      <div class=""progress">
+                                                                                                                                                                                                            <div class="progress-bar" id="bar"></div><div>      </div><div>
+                                                                                                                                                                                                                      <div class=""stats-row">
+                                                                                                                                                                                                                            <div class="stat-pill"> Total hours: <span id="statTotalHours">0</span>span></div><div>        <div class="stat-pill"> Hours/day: <span id="statHoursPerDay">0</span>span></div><div>        <div class="stat-pill"> Cookies/hour: <span id="statCookiesPerHour">0</span>span></div><div>      </div><div>    </div><div>  </div><div>
+                                                                                                                                                                                                                                  <footer>FGS  Built for Hack Club Flavortown </footer><footer></footer><div>
+                                                                                                                                                                                                                                    <div class=""modal" id=""resultModal">
+                                                                                                                                                                                                                                          <div class=""modal-box">
+                                                                                                                                                                                                                                            <h2>Your Cooking Plan</h2><h2>    <p class="modal-stats" id="modalStats"></p><p>    <button class="main-btn" style="margin-top:8px;" onclick="closeResultModal()">Back to kitchen</button><button>  </button><div></div><div>
+                                                                                                                                                                                                                                                <div class=""modal" id=""shopModal">
+                                                                                                                                                                                                                                                      <div class=""shop-modal-box">
+                                                                                                                                                                                                                                                        <div class="shop-modal-header">
+                                                                                                                                                                                                                                                                  <h3 class=""shop-modal-title">Choose a Goal From Shop</h3><h3>      <button class="shop-modal-close" id="closeShopModalBtn" aria-label="Close"></button><button>    </button><div>    <p style="font-size:0.85rem; color:var(--text-soft); margin:0 0 6px;">
+                                                                                                                                                                                                                                                                          Pick any item below and well fill in the goal and cookie cost for you.
+                                                                                                                                                                                                                                                                              </p><p>    <div class="shop-modal-list" id="shopOptions"></div><div>  </div><div></div><div>
+                                                                                                                                                                                                                                                                                <script>
+                                                                                                                                                                                                                                                                                    const cookiesInput    = document.getElementById("cookies");
+                                                                                                                                                                                                                                                                                    const daysInput       = document.getElementById("days");
+                                                                                                                                                                                                                                                                                    const quality         = document.getElementById("quality");
+                                                                                                                                                                                                                                                                                    const resultModal     = document.getElementById("resultModal");
+                                                                                                                                                                                                                                                                                    const modalStats      = document.getElementById("modalStats");
+                                                                                                                                                                                                                                                                                    const bar             = document.getElementById("bar");
+                                                                                                                                                                                                                                                                                    const goalNameInput   = document.getElementById("goalName");
+
+                                                                                                                                                                                                                                                                                    const statTotalHoursEl     = document.getElementById("statTotalHours");
+                                                                                                                                                                                                                                                                                    const statHoursPerDayEl    = document.getElementById("statHoursPerDay");
+                                                                                                                                                                                                                                                                                    const statCookiesPerHourEl = document.getElementById("statCookiesPerHour");
+
+                                                                                                                                                                                                                                                                                    const themeToggle      = document.getElementById("themeToggle");
+                                                                                                                                                                                                                                                                                    const THEME_KEY        = "fgs-theme";
+
+                                                                                                                                                                                                                                                                                    const chooseGoalBtn    = document.getElementById("chooseGoalBtn");
+                                                                                                                                                                                                                                                                                    const shopModal        = document.getElementById("shopModal");
+                                                                                                                                                                                                                                                                                    const closeShopModalBtn= document.getElementById("closeShopModalBtn");
+                                                                                                                                                                                                                                                                                    const shopOptionsEl    = document.getElementById("shopOptions");
+
+                                                                                                                                                                                                                                                                                    const shopGoals = [
+                                                                                                                                                                                                                                                                                          { name:"Campfire Flagship Travel Grant", cookies:15,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6ODg5MzQsInB1ciI6ImJsb2JfaWQifX0=--4b79e430a78c2747a9603f0a7c03df9b0ac29331/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMzYwLG51bGxdLCJzYXZlciI6eyJzdHJpcCI6dHJ1ZSwicXVhbGl0eSI6NzV9fSwicHVyIjoidmFyaWF0aW9uIn19--d6a39ad4705dc76c8821affe402d334558212c92/campfire-flagship-flight-stipend.png" },
+                                                                                                                                                                                                                                                                                            { name:"Chrome Webstore Licence",        cookies:20,  image:"https://flavortown.hackclub.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MTA1MzY3LCJwdXIiOiJibG9iX2lkIn19--a3540aa6c60c9e9e6835f4e7d728fd14a0793757/eyJfcmFpbHMiOnsiZ"}
+                                                                                                                                                                                                                                                                                    ]
+                                                                                                                                                                                                                                                                                </script>
+                                                                                                                                                                                                                                                                              </div></div></div></div></p>
+                                                                                                                                                                                                                                                                  </p></div></button></button></h3></h3>
+                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                            </div></div></button></button></p></p></h2></h2></div>
+                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                  </div></footer></footer>
+                                                                                                                                                                                                                            </div></div></div></div></span></div></span></div></span></div>
+                                                                                                                                                                                                            </div></div></div>
+                                                                                                                                                                                              </button></option>"></option></option>"></option></option>"></option></option>
+                                                                                                                                                                          </label>"></label></label>"></label></label>"></label></label></button>
+                                                                                                                                              </label>"></label></label>
+                                                                                                                                      </h2></h2></div>
+                                                                                                                        </div></div></p></p></h1></h1>
+                                                                                                              </div></div>
+                                                                                            </div>
+                                                                                    </div></div></div>
+                                                                            </div></div></div></div></h1></h1>
+                                                              </div></span></span></div>
+                                          </div>
+                              </div>
+                        </body>
+                    </head>
+                      }
+                    }
+                  }
+                }
+              }
+        }
+          }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    })
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+</style></title></title>
+</head></html>
